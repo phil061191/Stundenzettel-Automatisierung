@@ -1,0 +1,15 @@
+Analysiere diesen gescannten Stundenzettel und extrahiere folgende Informationen im JSON-Format:
+
+{
+  "name": "Vollständiger Name des Mitarbeiters",
+  "datum": "DD.MM.YYYY",
+  "startzeit": "HH:MM",
+  "endzeit": "HH:MM",
+  "pause_minuten": 30
+}
+
+Regeln:
+- Wenn keine Pause angegeben ist, verwende 0
+- Zeiten im 24-Stunden-Format
+- Datum im deutschen Format
+- Nur valide JSON ausgeben, keine Erklärungen

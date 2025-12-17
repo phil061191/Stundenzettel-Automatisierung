@@ -1,0 +1,53 @@
+═══════════════════════════════════════════════
+  STUNDENZETTEL SCANNER - Bedienungsanleitung
+═══════════════════════════════════════════════
+
+1. ERSTEINRICHTUNG
+   ----------------
+   - Öffne die Datei ".env" mit einem Texteditor
+   - Trage deinen Google API-Key ein
+   - Speichern und schließen
+
+2. STUNDENZETTEL SCANNEN
+   ----------------------
+   - Lege gescannte Stundenzettel in den "scans" Ordner
+   - Unterstützte Formate: JPG, PNG, PDF
+
+3. PROGRAMM STARTEN
+   -----------------
+   - Doppelklick auf "StundenzettelScanner.exe"
+   - Klick auf "Start"-Button
+   - Das Programm überwacht nun automatisch den Ordner
+
+4. VERARBEITUNG
+   -------------
+   - Neue Dateien werden automatisch erkannt
+   - Status wird im Fenster angezeigt
+   - Erfolgreich: Grün ✓
+   - Fehler: Rot ✗
+
+5. EXCEL-DATEI ÖFFNEN
+   ------------------
+   - Klick auf "Excel öffnen" Button
+   - Oder öffne manuell: "output\stundenzettel_export_*.xlsx"
+
+6. FERTIG!
+   -------
+   - Verarbeitete Dateien findest du in "archive"
+   - Fehlerhafte Dateien in "errors"
+
+SUPPORT: Bei Problemen siehe README.md
+
+═══════════════════════════════════════════════
+  API-Key erstellen
+═══════════════════════════════════════════════
+
+1. Besuche: https://aistudio.google.com/app/apikey
+2. Melde dich mit deinem Google-Konto an
+3. Klicke auf "Create API Key"
+4. Kopiere den generierten Key
+5. Füge ihn in die .env Datei ein
+
+WICHTIG: Teile deinen API-Key niemals mit anderen!
+
+═══════════════════════════════════════════════
