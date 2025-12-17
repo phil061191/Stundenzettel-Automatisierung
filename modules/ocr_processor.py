@@ -7,7 +7,8 @@ import os
 import json
 import logging
 from pathlib import Path
-import google.generativeai as genai
+from google import genai
+from google.genai import types
 from PIL import Image
 
 logger = logging.getLogger(__name__)
@@ -21,8 +22,7 @@ class OCRProcessor:
         if not api_key or api_key == "your_api_key_here":
             raise ValueError("Valid Gemini API key required. Please check your .env file.")
         
-        genai.configure(api_key=api_key)
-        self.model = genai.GenerativeModel('gemini-2.0-flash-exp')
+        self.client = genai.Client(api_key=api_key)
         logger.info("OCR Processor initialized with Gemini API")
         
         # Load prompt template
@@ -68,7 +68,10 @@ Regeln:
             logger.debug(f"Image loaded: {img.size}, {img.mode}")
             
             # Generate content using Gemini
-            response = self.model.generate_content([self.prompt_template, img])
+            response = self.client.models.generate_content(
+                model='gemini-2.0-flash-exp',
+                contents=[self.prompt_template, img]
+            )
             logger.debug(f"Gemini API response: {response.text}")
             
             # Extract JSON from response
@@ -108,7 +111,10 @@ Regeln:
                 return None
             
             # Process the first page
-            response = self.model.generate_content([self.prompt_template, images[0]])
+            response = self.client.models.generate_content(
+                model='gemini-2.0-flash-exp',
+                contents=[self.prompt_template, images[0]]
+            )
             logger.debug(f"Gemini API response: {response.text}")
             
             # Extract JSON from response

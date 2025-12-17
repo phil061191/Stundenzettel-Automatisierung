@@ -85,7 +85,7 @@ class ExcelExporter:
                     datum_obj = datetime.strptime(datum_str, "%d.%m.%Y")
                     cell = ws.cell(row=row_num, column=2, value=datum_obj)
                     cell.number_format = 'DD.MM.YYYY'
-                except:
+                except (ValueError, TypeError):
                     cell = ws.cell(row=row_num, column=2, value=datum_str)
                 cell.border = border
                 
@@ -140,5 +140,5 @@ class ExcelExporter:
         """Parse date string for sorting"""
         try:
             return datetime.strptime(date_str, "%d.%m.%Y")
-        except:
+        except (ValueError, TypeError):
             return datetime.min

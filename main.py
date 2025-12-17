@@ -32,9 +32,31 @@ class TimesheetHandler(FileSystemEventHandler):
     def on_created(self, event):
         """Handle new file creation"""
         if not event.is_directory and FileHandler.is_supported_file(event.src_path):
-            # Wait a bit to ensure file is fully written
-            time.sleep(1)
+            # Wait to ensure file is fully written
+            # Check file size stability as a proxy for completion
+            self._wait_for_file_completion(event.src_path)
             self.processor.process_file(event.src_path)
+    
+    def _wait_for_file_completion(self, filepath, timeout=10):
+        """Wait for file to be completely written by checking size stability"""
+        import time
+        last_size = -1
+        stable_count = 0
+        start_time = time.time()
+        
+        while time.time() - start_time < timeout:
+            try:
+                current_size = os.path.getsize(filepath)
+                if current_size == last_size and current_size > 0:
+                    stable_count += 1
+                    if stable_count >= 2:  # Size stable for 2 checks
+                        return
+                else:
+                    stable_count = 0
+                last_size = current_size
+                time.sleep(0.5)
+            except OSError:
+                time.sleep(0.5)
 
 
 class StundenzettelScanner:
@@ -173,7 +195,8 @@ class StundenzettelScanner:
                 
                 try:
                     self.gui.log_message(msg, level)
-                except:
+                except (AttributeError, RuntimeError):
+                    # GUI may not be ready or has been destroyed
                     pass
         
         gui_handler = GUIHandler(self.gui)

@@ -8,6 +8,9 @@ from datetime import datetime, timedelta
 
 logger = logging.getLogger(__name__)
 
+# Business logic constant
+MINIMUM_DEDUCTIBLE_BREAK_MINUTES = 30
+
 
 class TimeCalculator:
     """Calculates net working hours from timesheet data"""
@@ -39,11 +42,11 @@ class TimeCalculator:
             total_minutes = total_time.total_seconds() / 60
             
             # Apply break logic: only subtract breaks > 30 minutes
-            if pause_minutes > 30:
+            if pause_minutes > MINIMUM_DEDUCTIBLE_BREAK_MINUTES:
                 total_minutes -= pause_minutes
-                logger.debug(f"Break > 30 min: {pause_minutes} min deducted")
+                logger.debug(f"Break > {MINIMUM_DEDUCTIBLE_BREAK_MINUTES} min: {pause_minutes} min deducted")
             else:
-                logger.debug(f"Break <= 30 min: {pause_minutes} min NOT deducted")
+                logger.debug(f"Break <= {MINIMUM_DEDUCTIBLE_BREAK_MINUTES} min: {pause_minutes} min NOT deducted")
             
             # Convert to hours
             net_hours = total_minutes / 60
@@ -91,5 +94,5 @@ class TimeCalculator:
         try:
             time_obj = datetime.strptime(time_str, "%H:%M")
             return time_obj.strftime("%H:%M")
-        except:
+        except ValueError:
             return time_str
